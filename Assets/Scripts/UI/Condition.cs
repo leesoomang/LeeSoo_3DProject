@@ -17,21 +17,12 @@ public class Condition : MonoBehaviour
         curValue = startValue;
     }
 
-    void Update()
+    public void Add(float value)
     {
-        uiBar.fillAmount = GetPercentage();
+        curValue = Mathf.Clamp(curValue + value, 0f, maxValue);
     }
 
-    float GetPercentage()
-    {
-        return curValue / maxValue;
-    }
-    public void Subtract(float value)
-    {
-        curValue -= Mathf.Max(curValue - value, 0);
-    }
-    public void Add(float amount)
-    {
-        curValue = Mathf.Clamp(curValue + amount, 0f, maxValue);
-    }
+
+
+
 }

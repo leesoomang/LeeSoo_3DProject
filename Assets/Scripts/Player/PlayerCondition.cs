@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class PlayerCondition : MonoBehaviour
 {
-    [Header("UI Condition ÂüÁ¶")]
+    [Header("UI Condition ì°¸ì¡°")]
     [SerializeField] public UICondition uiCondition;
 
-    // uiConditionÀÌ ÇÒ´çµÇ¾î ÀÖÀ¸¸é Condition ¹İÈ¯, ¾Æ´Ï¸é null ¹İÈ¯
+    // uiConditionì´ í• ë‹¹ë˜ì–´ ìˆìœ¼ë©´ Condition ë°˜í™˜, ì•„ë‹ˆë©´ null ë°˜í™˜
     private Condition health => uiCondition != null ? uiCondition.health : null;
 
 
@@ -18,29 +18,23 @@ public class PlayerCondition : MonoBehaviour
 
         if (uiCondition == null)
         {
-            Debug.LogError($"[{name}] UIConditionÀ» Ã£À» ¼ö ¾ø½À´Ï´Ù.", this);
+            Debug.LogError($"[{name}] UIConditionì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.", this);
             enabled = false;
         }
     }
 
     void Update()
     {
-        // Ã¼·ÂÀÌ 0 ÀÌÇÏ·Î ¶³¾îÁö¸é Die È£Ãâ
+        // ì²´ë ¥ì´ 0 ì´í•˜ë¡œ ë–¨ì–´ì§€ë©´ Die í˜¸ì¶œ
         if (health != null && health.curValue <= 0f)
         {
             Die();
         }
     }
 
-    public void Heal(float amount)
-    {
-        if (health != null)
-            health.Add(amount);
-    }
-
     private void Die()
     {
         Debug.Log("Die");
-        // »ç¸Á Ã³¸® ·ÎÁ÷ Ãß°¡...
+        // ì‚¬ë§ ì²˜ë¦¬ ë¡œì§ ì¶”ê°€...
     }
 }
