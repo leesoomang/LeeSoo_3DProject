@@ -84,27 +84,32 @@ public class PlayerController : MonoBehaviour
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed && IsGrounded())
+        if (context.phase == InputActionPhase.Started && IsGrounded())
         {
-            _rigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            _rigidbody.AddForce(Vector2.up * jumpPower, ForceMode.Impulse);
         }
     }
-
-    bool IsGrounded()
+    private bool _isGrounded;
+    private bool IsGrounded()
     {
-        Ray[] rays = new Ray[4]
-        {
-            new Ray(transform.position + transform.forward * 0.2f + Vector3.up * 0.01f, Vector3.down),
-            new Ray(transform.position - transform.forward * 0.2f + Vector3.up * 0.01f, Vector3.down),
-            new Ray(transform.position + transform.right   * 0.2f + Vector3.up * 0.01f, Vector3.down),
-            new Ray(transform.position - transform.right   * 0.2f + Vector3.up * 0.01f, Vector3.down)
-        };
-
-        foreach (var ray in rays)
-        {
-            if (Physics.Raycast(ray, 0.1f, groundLayerMask))
-                return true;
-        }
-        return false;
+        return _isGrounded;
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if ((groundLayerMask.value & (1 << collision.gameObject.layer)) != 0)
+            _isGrounded = true;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if ((groundLayerMask.value & (1 << collision.gameObject.layer)) != 0)
+            _isGrounded = true;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        if ((groundLayerMask.value & (1 << collision.gameObject.layer)) != 0)
+            _isGrounded = false;
+    }
+
 }

@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -10,18 +9,19 @@ public class CharacterManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                _instance = new CharacterManager().AddComponent<CharacterManager>();
+                _instance = FindObjectOfType<CharacterManager>();
+                if (_instance == null)
+                {
+                    var go = new GameObject("CharacterManager");
+                    _instance = go.AddComponent<CharacterManager>();
+                }
             }
             return _instance;
         }
     }
 
-    public Player _player;
-    public Player Player
-    {
-        get { return _player; }
-        set { _player = value; }
-    }
+    // 플레이어 참조
+    public Player Player;
 
     private void Awake()
     {
@@ -30,13 +30,9 @@ public class CharacterManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else if (_instance != this)
         {
-            if (_instance == this)
-            {
-                Destroy(_instance.gameObject);
-            }
+            Destroy(gameObject);
         }
     }
 }
-
